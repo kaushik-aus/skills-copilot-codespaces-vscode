@@ -507,14 +507,17 @@ const useMobileDetection = () => {
 const MagicBento = ({
   textAutoHide = true,
   enableStars = true,
-  enableSpotlight = true,
-  enableBorderGlow = true,
+  // CHANGED: default off so the big orange spotlight overlay is removed
+  enableSpotlight = false,
+  // CHANGED: default off; avoids the big radial glow pseudo-element on cards
+  enableBorderGlow = false,
   disableAnimations = false,
   spotlightRadius = DEFAULT_SPOTLIGHT_RADIUS,
   particleCount = DEFAULT_PARTICLE_COUNT,
   enableTilt = false,
   glowColor = DEFAULT_GLOW_COLOR,
-  clickEffect = true,
+  // Optional: if you also want to avoid click ripples, set default to false
+  clickEffect = false,
   enableMagnetism = true,
 }) => {
   const gridRef = useRef(null);

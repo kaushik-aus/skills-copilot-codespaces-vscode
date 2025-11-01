@@ -219,3 +219,16 @@
   position: relative;
   user-select: none;
 }
+
+/* ========= HARD DISABLE OF BIG ORANGE CIRCLE EFFECTS ========= */
+/* Remove the global orange spotlight overlay entirely */
+.global-spotlight {
+  display: none !important;
+}
+
+/* Remove the radial-gradient pseudo-element so no circle shows on cards */
+.magic-bento-card--border-glow::after {
+  content: none !important;
+  background: none !important;
+  opacity: 0 !important;
+}
