@@ -1,0 +1,39 @@
+/* src/App.css */
+
+/* 1. Set up the manga background on the BODY */
+body {
+  background-image: url("C:\\test3\\my-app\\src\\assets\\batman.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  /* These are needed for the overlay to work */
+  position: relative;
+  z-index: 0;
+}
+
+/* 2. Create the white, faded overlay */
+body::before {
+  content: "";
+  position: fixed; /* Covers the entire screen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* This is the white overlay with 70% opacity */
+  /* Adjust 0.7 to 0.8 or 0.9 to make it *less* visible (more white) */
+  background-color: rgba(255, 255, 255, 0.7);
+
+  /* Sits between the body's background image and your content */
+  z-index: -1;
+}
+
+/* 3. Make the main app container sit on top of the overlay */
+.app-container {
+  background-color: transparent;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1; /* Sits on top of the body and its overlay */
+}

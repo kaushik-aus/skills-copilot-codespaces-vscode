@@ -1,0 +1,84 @@
+/* src/components/Dock.css */
+
+.dock-outer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  align-items: center;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  /* Fixed height to prevent parent from expanding */
+  height: 100px; /* Adjusted height to fit text */
+}
+
+.dock-panel {
+  position: relative;
+  bottom: auto;
+  left: auto;
+  transform: none;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: flex-end; /* Aligns items to the bottom */
+  width: fit-content;
+  gap: 1.5rem; /* <-- 1. GAP ADDED (was 1rem) */
+  border-radius: 1rem;
+
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+
+  padding: 0 0.5rem;
+}
+
+.dock-item {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+
+  /* --- 2. NAME UNDER (Alignment) --- */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* Space between icon and text */
+  will-change: width;
+}
+
+.dock-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Animated size is now applied here */
+  will-change: width, height;
+}
+
+.dock-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  /* --- 3. LIGHT BORDER ADDED --- */
+  border: 1px solid #dddddd;
+}
+
+.dock-label {
+  /* --- 2. NAME UNDER (Styling) --- */
+  position: relative;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-align: center;
+
+  /* Remove all old tooltip styles */
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0;
+  white-space: nowrap; /* Prevent name from wrapping */
+}
