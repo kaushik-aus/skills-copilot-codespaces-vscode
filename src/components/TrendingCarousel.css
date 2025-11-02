@@ -1,0 +1,105 @@
+/* Single-line infinite carousel for Trending section */
+
+.trending-carousel {
+  position: relative;
+  overflow: hidden;
+  --carousel-gap: 24px;
+  --carousel-duration: 60s; /* computed by JS */
+  --carousel-distance: 1000px; /* computed by JS */
+  --edge-fade: 64px;
+  padding: 8px 0;
+}
+
+/* Subtle edge fade using a luminance mask (no visible white panels) */
+.trending--masked {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 1) var(--edge-fade),
+    rgba(0, 0, 0, 1) calc(100% - var(--edge-fade)),
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 1) var(--edge-fade),
+    rgba(0, 0, 0, 1) calc(100% - var(--edge-fade)),
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
+
+/* Ensure one line, no wrapping */
+.trending-track {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  gap: var(--carousel-gap);
+  will-change: transform;
+  animation: trending-scroll var(--carousel-duration) linear infinite;
+}
+
+/* Keep ANY child (your existing cards) on one line */
+.trending-track > * {
+  flex: 0 0 auto;
+}
+
+/* SIZING: Constrain card width and image height inside carousel */
+.trending-track > .masonry-item,
+.trending-track > .trending-item,
+.trending-track > article {
+  width: clamp(240px, 26vw, 340px);
+  border-radius: 12px;
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
+.trending-track > .masonry-item img,
+.trending-track > .trending-item img,
+.trending-track > article img {
+  display: block;
+  width: 100%;
+  height: clamp(140px, 18vw, 200px);
+  object-fit: cover;
+  background-color: #f0f0f0;
+}
+
+@keyframes trending-scroll {
+  to {
+    transform: translateX(calc(-1 * var(--carousel-distance)));
+  }
+}
+
+/* Pause on hover/focus */
+.trending-carousel:hover .trending-track,
+.trending-carousel:focus-within .trending-track {
+  animation-play-state: paused;
+}
+
+/* A11y: honor reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .trending-track {
+    animation: none;
+  }
+  .trending-carousel {
+    overflow-x: auto;
+  }
+}
+
+/* Ensure section titles render in theme text color */
+.product-section > h3 {
+  color: var(--text-primary);
+}
+@media (max-width: 768px) {
+  .trending-carousel {
+    --edge-fade: 16px;
+  }
+}
+@media (min-width: 1440px) {
+  .trending-carousel {
+    --edge-fade: 24px;
+  }
+}

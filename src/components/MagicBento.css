@@ -1,19 +1,14 @@
 /* src/components/MagicBento.css */
 
-/*
-  MODIFIED:
-  Replaced all purple/dark theme variables 
-  with your existing white/orange theme variables.
-*/
 :root {
   --hue: 27;
   --sat: 69%;
-  --white: var(--text-primary); /* Was hsl(0, 0%, 100%) */
-  --purple-primary: var(--primary-orange); /* Was rgba(132, 0, 255, 1) */
-  --purple-glow: rgba(255, 102, 0, 0.2); /* Was rgba(132, 0, 255, 0.2) */
-  --purple-border: rgba(255, 102, 0, 0.8); /* Was rgba(132, 0, 255, 0.8) */
-  --border-color: var(--border-color); /* Was #392e4e */
-  --background-dark: var(--secondary-bg); /* Was #060010 */
+  --white: var(--text-primary);
+  --purple-primary: var(--primary-orange);
+  --purple-glow: rgba(255, 102, 0, 0.2);
+  --purple-border: rgba(255, 102, 0, 0.8);
+  --border-color: var(--border-color);
+  --background-dark: var(--secondary-bg);
   color-scheme: light dark;
 }
 
@@ -23,8 +18,8 @@
   padding: 0.75em;
   max-width: 100%;
   font-size: clamp(1rem, 0.9rem + 0.5vw, 1.5rem);
-  /* margin-top: 40px; */ /* <-- Make sure this line is DELETED or commented out */
 }
+
 .magic-bento-card {
   display: flex;
   flex-direction: column;
@@ -57,7 +52,9 @@
 .magic-bento-card__content {
   display: flex;
   position: relative;
-  color: var(--white); /* This is now var(--text-primary) / black */
+  /* --- 1. FIX: Set text color to white --- */
+  color: white;
+  z-index: 2; /* Sits on top of the media container */
 }
 
 .magic-bento-card__header {
@@ -71,7 +68,10 @@
 
 .magic-bento-card__label {
   font-size: 16px;
-  color: var(--text-secondary);
+  /* --- 1. FIX: Set text color to light gray --- */
+  color: whitesmoke;
+  /* --- 2. FIX: Added glow --- */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .magic-bento-card__title,
@@ -84,13 +84,18 @@
   font-weight: 400;
   font-size: 16px;
   margin: 0 0 0.25em;
+  /* --- 2. FIX: Added glow --- */
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .magic-bento-card__description {
   font-size: 12px;
   line-height: 1.2;
   opacity: 0.9;
-  color: var(--text-secondary);
+  /* --- 1. FIX: Set text color to white --- */
+  color: white;
+  /* --- 2. FIX: Added glow --- */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .magic-bento-card--text-autohide .magic-bento-card__title,
@@ -109,6 +114,45 @@
 .magic-bento-card--text-autohide .magic-bento-card__description {
   -webkit-line-clamp: var(--clamp-desc);
   line-clamp: var(--clamp-desc);
+}
+
+.magic-bento-media-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.magic-bento-media-container img,
+.magic-bento-media-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.magic-bento-media-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* --- 3. FIX: New gradient to protect text at top AND bottom --- */
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.6) 0%,
+    /* Dark at the top */ rgba(0, 0, 0, 0) 40%,
+    /* Fades to transparent */ rgba(0, 0, 0, 0) 60%,
+    /* Transparent in the middle */ rgba(0, 0, 0, 0.8) 100%
+      /* Dark at the bottom */
+  );
 }
 
 @media (max-width: 599px) {
@@ -158,7 +202,6 @@
   position: absolute;
   inset: 0;
   padding: 6px;
-  /* MODIFIED: Use orange */
   background: radial-gradient(
     var(--glow-radius) circle at var(--glow-x) var(--glow-y),
     rgba(255, 102, 0, calc(var(--glow-intensity) * 0.8)) 0%,
@@ -179,7 +222,6 @@
   opacity: 1;
 }
 
-/* MODIFIED: Use orange shadow */
 .magic-bento-card--border-glow:hover {
   box-shadow: 0 4px 20px rgba(255, 102, 0, 0.1), 0 0 30px var(--purple-glow);
 }
@@ -189,7 +231,6 @@
   overflow: hidden;
 }
 
-/* MODIFIED: Use orange particle color */
 .particle::before {
   content: "";
   position: absolute;
@@ -202,12 +243,10 @@
   z-index: -1;
 }
 
-/* MODIFIED: Use orange shadow */
 .particle-container:hover {
   box-shadow: 0 4px 20px rgba(255, 102, 0, 0.1), 0 0 30px var(--purple-glow);
 }
 
-/* Global spotlight styles */
 .global-spotlight {
   mix-blend-mode: screen;
   will-change: transform, opacity;
@@ -218,17 +257,4 @@
 .bento-section {
   position: relative;
   user-select: none;
-}
-
-/* ========= HARD DISABLE OF BIG ORANGE CIRCLE EFFECTS ========= */
-/* Remove the global orange spotlight overlay entirely */
-.global-spotlight {
-  display: none !important;
-}
-
-/* Remove the radial-gradient pseudo-element so no circle shows on cards */
-.magic-bento-card--border-glow::after {
-  content: none !important;
-  background: none !important;
-  opacity: 0 !important;
 }

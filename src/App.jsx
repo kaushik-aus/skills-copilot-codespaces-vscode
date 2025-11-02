@@ -14,6 +14,9 @@ import "./components/MagicBento.css";
 import Dock from "./components/Dock.jsx";
 import "./components/Dock.css";
 import { ColorfulText } from "./components/ColorfulText.jsx";
+// Add these imports with your other imports
+import TrendingCarousel from "./components/TrendingCarousel.jsx";
+import "./components/TrendingCarousel.css";
 
 import "./index.css";
 import "./App.css";
@@ -376,14 +379,14 @@ function App() {
 
         <section className="product-section animate-on-scroll">
           <h3>Trending Models</h3>
-          <Masonry
-            breakpointCols={breakpointColumnsObj}
-            className="masonry-grid"
-            columnClassName="masonry-grid-column"
-          >
-            {/* Item 1 */}
+
+          {/* REPLACE the Masonry wrapper with the carousel */}
+          <TrendingCarousel>
+            {/* Paste ALL your existing cards from this section here, unchanged */}
+            {/* Example using the first two items already in the file: */}
+
             <div className="masonry-item">
-              <img src="https://via.placeholder.com/300x300" alt="Asset" />
+              <img src={narutoImage} alt="Asset" />
               <div className="item-info">
                 <div className="item-details">
                   <h4>Haikyuu</h4>
@@ -399,9 +402,9 @@ function App() {
                 </button>
               </div>
             </div>
-            {/* Item 2 */}
+
             <div className="masonry-item">
-              <img src="https://via.placeholder.com/300x300" alt="Asset" />
+              <img src={spyImage} alt="Asset" />
               <div className="item-info">
                 <div className="item-details">
                   <h4>SM Z Dek Ssummer</h4>
@@ -417,14 +420,14 @@ function App() {
                 </button>
               </div>
             </div>
-            {/* Item 3 (Fixed URL) */}
+
             <div className="masonry-item">
-              <img src="https://via.placeholder.com/300x300" alt="Asset" />
+              <img src={demonImage} alt="Asset" />
               <div className="item-info">
                 <div className="item-details">
-                  <h4>Stnn Tocer Partall</h4>
+                  <h4>SM Z Dek Ssummer</h4>
                   <p>Steptoame Dri Renpart</p>
-                  <span className="item-price">$35.50</span>
+                  <span className="item-price">$22.00</span>
                 </div>
                 <button
                   className="add-to-cart-btn"
@@ -435,14 +438,14 @@ function App() {
                 </button>
               </div>
             </div>
-            {/* Item 4 */}
+
             <div className="masonry-item">
-              <img src="https://via.placeholder.com/300x300" alt="Asset" />
+              <img src={whaleImage} alt="Asset" />
               <div className="item-info">
                 <div className="item-details">
-                  <h4>Carm Or</h4>
+                  <h4>SM Z Dek Ssummer</h4>
                   <p>Steptoame Dri Renpart</p>
-                  <span className="item-price">$9.00</span>
+                  <span className="item-price">$22.00</span>
                 </div>
                 <button
                   className="add-to-cart-btn"
@@ -453,14 +456,14 @@ function App() {
                 </button>
               </div>
             </div>
-            {/* Item 5 (Fixed URL) */}
+
             <div className="masonry-item">
-              <img src="https://via.placeholder.com/300x280" alt="Asset" />
+              <img src={humanImage} alt="Asset" />
               <div className="item-info">
                 <div className="item-details">
-                  <h4>Bacea a Flrt</h4>
+                  <h4>SM Z Dek Ssummer</h4>
                   <p>Steptoame Dri Renpart</p>
-                  <span className="item-price">$18.99</span>
+                  <span className="item-price">$22.00</span>
                 </div>
                 <button
                   className="add-to-cart-btn"
@@ -471,14 +474,14 @@ function App() {
                 </button>
               </div>
             </div>
-            {/* Item 6 */}
+
             <div className="masonry-item">
-              <img src="https://via.placeholder.com/300x220" alt="Asset" />
+              <img src={girlImage} alt="Asset" />
               <div className="item-info">
                 <div className="item-details">
-                  <h4>Mata Of Bayal</h4>
+                  <h4>SM Z Dek Ssummer</h4>
                   <p>Steptoame Dri Renpart</p>
-                  <span className="item-price">$21.00</span>
+                  <span className="item-price">$22.00</span>
                 </div>
                 <button
                   className="add-to-cart-btn"
@@ -489,7 +492,27 @@ function App() {
                 </button>
               </div>
             </div>
-          </Masonry>
+
+            <div className="masonry-item">
+              <img src={angryImage} alt="Asset" />
+              <div className="item-info">
+                <div className="item-details">
+                  <h4>SM Z Dek Ssummer</h4>
+                  <p>Steptoame Dri Renpart</p>
+                  <span className="item-price">$22.00</span>
+                </div>
+                <button
+                  className="add-to-cart-btn"
+                  aria-label="Add to cart"
+                  onClick={handleRipple}
+                >
+                  <FaShoppingCart />
+                </button>
+              </div>
+            </div>
+
+            {/* Continue pasting the rest of your existing trending cards here */}
+          </TrendingCarousel>
         </section>
 
         {/* --- BENTO GRID is in the correct place --- */}
