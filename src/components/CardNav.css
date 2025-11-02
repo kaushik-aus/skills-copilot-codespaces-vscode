@@ -82,7 +82,7 @@
   border-radius: 0.5rem;
   height: 44px;
   cursor: text;
-  color: #52525b;
+  color: #515151;
   width: 180px;
   transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   overflow: hidden;
@@ -112,7 +112,7 @@
   outline: none;
   padding: 0 1rem 0 2.5rem;
   font-size: 0.9rem;
-  color: #18181b;
+  color: #300202;
   z-index: 1;
 }
 
@@ -153,6 +153,7 @@
 .textflip {
   display: inline-flex;
   align-items: center;
+  color: #ff4800;
 }
 
 .textflip-viewport {

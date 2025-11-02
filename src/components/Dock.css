@@ -10,7 +10,7 @@
   -webkit-overflow-scrolling: touch;
   overflow-x: auto;
   /* Fixed height to prevent parent from expanding */
-  height: 100px; /* Adjusted height to fit text */
+  height: 150px; /* Adjusted height to fit text */
 }
 
 .dock-panel {
@@ -23,7 +23,7 @@
   display: flex;
   align-items: flex-end; /* Aligns items to the bottom */
   width: fit-content;
-  gap: 1.5rem; /* <-- 1. GAP ADDED (was 1rem) */
+  gap: 4.35rem; /* <-- 1. GAP ADDED (was 1rem) */
   border-radius: 1rem;
 
   background-color: transparent;
@@ -62,9 +62,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: 30%;
   /* --- 3. LIGHT BORDER ADDED --- */
   border: 1px solid #dddddd;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);
 }
 
 .dock-label {
