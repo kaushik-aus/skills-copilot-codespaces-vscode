@@ -5,7 +5,11 @@ import { GoArrowUpRight } from "react-icons/go";
 import "./CardNav.css";
 
 import { TextFlip } from "./TextFlip.jsx";
-import { FaSearch, FaShoppingCart } from "react-icons/fa";
+// Use stable Lucide icon names that are available across versions
+import { LuSearch, LuShoppingCart, LuUser, LuEllipsis } from "react-icons/lu";
+
+// Fallback logo if none is provided via props
+import defaultWordmark from "../assets/brand/wordmark.svg";
 
 const CardNav = ({
   logo,
@@ -43,7 +47,7 @@ const CardNav = ({
         contentEl.style.pointerEvents = "auto";
         contentEl.style.position = "static";
         contentEl.style.height = "auto";
-        // Force reflow for measurement
+        // Force reflow
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         contentEl.offsetHeight;
         const topBar = 60;
@@ -87,8 +91,6 @@ const CardNav = ({
 
       return tl;
     } catch (e) {
-      // Prevent hard crashes and surface a helpful log
-      // You’ll still see the red overlay with the real error/stack in dev
       console.error("GSAP timeline error in CardNav:", e);
       return null;
     }
@@ -145,10 +147,11 @@ const CardNav = ({
     }
   };
 
-  // React will call this with `null` on unmount, so it will clear safely.
   const setCardRef = (i) => (el) => {
     cardsRef.current[i] = el || null;
   };
+
+  const logoSrc = logo || defaultWordmark;
 
   return (
     <div className={`card-nav-container ${className}`}>
@@ -158,6 +161,7 @@ const CardNav = ({
         style={{ backgroundColor: baseColor }}
       >
         <div className="card-nav-top">
+          {/* Left: hamburger + brand */}
           <div className="card-nav-left">
             <div
               className={`hamburger-menu ${isHamburgerOpen ? "open" : ""}`}
@@ -165,38 +169,67 @@ const CardNav = ({
               role="button"
               aria-label={isExpanded ? "Close menu" : "Open menu"}
               tabIndex={0}
-              style={{ color: menuColor || "#000" }}
+              style={{ color: menuColor || "#0f172a" }}
             >
               <div className="hamburger-line" />
               <div className="hamburger-line" />
             </div>
 
-            <div className="card-nav-search">
-              <FaSearch className="card-nav-search-icon" aria-hidden="true" />
-              <input type="text" className="card-nav-search-input" />
+            <a className="logo-container" href="/" aria-label="Home">
+              <img src={logoSrc} alt={logoAlt || "Logo"} />
+            </a>
+          </div>
 
+          {/* Center: wide search */}
+          <div className="card-nav-center">
+            <div className="card-nav-search">
+              <LuSearch className="card-nav-search-icon" aria-hidden="true" />
+              <input type="text" className="card-nav-search-input" />
               <div className="card-nav-search-text">
                 <span className="search-text-static">Search</span>
-                <TextFlip words={searchWords} />
+                <TextFlip
+                  words={[
+                    "models...",
+                    "anime...",
+                    "characters...",
+                    "vehicles...",
+                  ]}
+                />
               </div>
             </div>
           </div>
 
+          {/* Right: actions */}
           <div className="card-nav-right">
-            <button className="card-nav-icon-btn" aria-label="Cart">
-              <FaShoppingCart />
+            <button
+              className="card-nav-icon-btn"
+              type="button"
+              aria-label="Login"
+            >
+              <LuUser />
+              <span>Login</span>
+            </button>
+
+            <button
+              className="card-nav-icon-btn"
+              aria-label="Cart"
+              type="button"
+            >
+              <LuShoppingCart />
               <span>Cart</span>
             </button>
-            <button
-              type="button"
-              className="card-nav-cta-button"
-              style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
+
+            <a
+              className="card-nav-text-link"
+              href="#"
+              aria-label="Become a Seller"
             >
-              Sign In
-            </button>
+              Become a Seller
+            </a>
           </div>
         </div>
 
+        {/* Expanded content */}
         <div className="card-nav-content" aria-hidden={!isExpanded}>
           {(items || []).slice(0, 3).map((item, idx) => (
             <div
@@ -212,7 +245,7 @@ const CardNav = ({
                     key={`${lnk.label}-${i}`}
                     className="nav-card-link"
                     href={lnk.href}
-                    aria-label={lnk.ariaLabel}
+                    aria-label={lnk.ariaLabel || lnk.label}
                   >
                     <GoArrowUpRight
                       className="nav-card-link-icon"

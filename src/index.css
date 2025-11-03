@@ -44,7 +44,6 @@
   align-items: center;
   gap: 8px;
 }
-
 .btn-primary {
   background-color: var(--primary-orange);
   color: white;
@@ -54,15 +53,35 @@
   box-shadow: 0 4px 10px rgba(255, 102, 0, 0.3);
 }
 
-/* ===== HERO CAROUSEL (SLIDING VERSION) ===== */
+/* ===== HERO CAROUSEL (IMPROVED) ===== */
+/* ...existing styles above remain unchanged */
+
+/* ===== HERO CAROUSEL (IMPROVEMENTS) ===== */
 .hero-carousel {
-  border-radius: 12px;
-  overflow: hidden;
   position: relative;
-  border: 1px solid var(--border-color);
-  background-color: var(--secondary-bg);
-  box-shadow: var(--card-shadow);
-  z-index: 1;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.85),
+    rgba(255, 255, 255, 0.72)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 30px 60px -30px rgba(24, 16, 8, 0.35);
+  isolation: isolate;
+}
+.hero-carousel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: 16px;
+  background: linear-gradient(120deg, #ffa84b, #ff5e69 50%, #b16cea);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.55;
 }
 
 .carousel-track {
@@ -71,59 +90,221 @@
 }
 
 .carousel-slide {
-  min-height: 400px;
+  min-height: 420px;
   background-size: cover;
   background-position: center;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 40px;
+  padding: clamp(24px, 4vw, 40px);
   width: 100%;
   flex-shrink: 0;
+  position: relative;
+}
+.carousel-slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    60% 80% at 80% 20%,
+    transparent 0,
+    transparent 55%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
+  pointer-events: none;
 }
 
 .hero-content {
-  max-width: 40%;
+  max-width: 42%;
   z-index: 2;
 }
 .hero-content h2 {
-  font-size: 2.5rem;
+  font-size: clamp(28px, 3.4vw, 44px);
   margin-bottom: 10px;
+  line-height: 1.06;
+  letter-spacing: -0.4px;
+  font-weight: 800;
 }
 .hero-content p {
   color: var(--text-secondary);
   margin-bottom: 20px;
+  font-size: clamp(14px, 1.2vw, 16px);
 }
-.hero-asset-image {
-  max-width: 55%;
-  height: auto;
-  z-index: 1;
+
+/* NEW: Framed media that visually belongs to the carousel */
+.hero-media {
+  position: relative;
+  width: min(56%, 720px);
+  aspect-ratio: 16/9;
+  border-radius: 14px;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.82),
+    rgba(255, 255, 255, 0.68)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 22px 50px -28px rgba(24, 16, 8, 0.35);
+  isolation: isolate;
 }
+.hero-media::before {
+  /* gradient ring to match the hero */
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #ffa84b, #ff5e69 50%, #b16cea);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.55;
+}
+.hero-media::after {
+  /* soft inner light so it blends with the content side */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      120% 100% at 0% 50%,
+      rgba(255, 255, 255, 0.65),
+      transparent 40%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0));
+  mix-blend-mode: screen;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.hero-media-asset {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: inherit;
+  transform: scale(1.01);
+}
+
+/* Arrows and dots remain as previously improved */
+.hero-arrows {
+  position: absolute;
+  inset: auto 14px 14px 14px;
+  display: flex;
+  justify-content: space-between;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 180ms ease, transform 180ms ease;
+  z-index: 3;
+}
+.hero-carousel:hover .hero-arrows {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hero-arrow {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 18px 30px -18px rgba(24, 16, 8, 0.45);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+.hero-arrow:hover {
+  transform: translateY(-2px);
+}
+
 .carousel-dots {
   position: absolute;
-  bottom: 20px;
+  bottom: 18px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 8px;
+  gap: 10px;
   z-index: 3;
 }
 .carousel-dots .dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #ccc;
+  --size: 10px;
+  position: relative;
+  width: calc(var(--size) + 12px);
+  height: calc(var(--size) + 12px);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 12px 26px -16px rgba(24, 16, 8, 0.45);
+  display: grid;
+  place-items: center;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  outline: none;
+  border: none;
 }
-.carousel-dots .dot:hover {
-  background-color: #aaa;
+.carousel-dots .dot::before {
+  content: "";
+  width: var(--size);
+  height: var(--size);
+  border-radius: 999px;
+  background: #c7c7c7;
+  display: block;
 }
-.carousel-dots .dot.active {
-  background-color: var(--primary-orange);
+.carousel-dots .dot.active::before {
+  background: linear-gradient(90deg, #ff8a00, #ff3d00);
+}
+.dot-fill {
+  position: absolute;
+  inset: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff8a00, #ff3d00);
+  transform-origin: left;
+  transform: scaleX(0);
+  opacity: 0.22;
+  pointer-events: none;
+}
+.carousel-dots .dot.active .dot-fill {
+  animation: dot-fill linear forwards;
+}
+@keyframes dot-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
-/* ===== PRODUCT SECTION (FOR SCROLLER & MASONRY) ===== */
+/* Responsive tweaks */
+@media (max-width: 1024px) {
+  .hero-content {
+    max-width: 50%;
+  }
+  .hero-media {
+    width: 46%;
+  }
+}
+@media (max-width: 768px) {
+  .hero-carousel .carousel-slide {
+    flex-direction: column;
+    text-align: center;
+    padding: 30px 20px;
+  }
+  .hero-media {
+    width: 100%;
+    aspect-ratio: 16/9;
+    order: -1;
+    margin-bottom: 20px;
+  }
+  .hero-content {
+    max-width: 100%;
+  }
+}
+
+/* ...rest of your existing CSS stays as-is */
+
+/* ===== PRODUCT SECTION, MASONRY, ETC. (unchanged) ===== */
 .product-section {
   position: relative;
 }
@@ -132,7 +313,7 @@
   margin-bottom: 20px;
 }
 
-/* --- 7. STYLES FOR THE SCROLLER (Added back) --- */
+/* Controls for other scrollers (unchanged) */
 .card-nav-controls {
   display: flex;
   gap: 8px;
@@ -162,6 +343,8 @@
 .card-nav-container {
   overflow: hidden;
 }
+
+/* Product cards */
 .product-card-row {
   display: flex;
   gap: 20px;
@@ -169,7 +352,7 @@
   padding-top: 10px;
 }
 .product-card {
-  min-width: 280px; /* Width for scroller items */
+  min-width: 280px;
   border-radius: 8px;
   overflow: hidden;
   background-color: var(--secondary-bg);
@@ -192,7 +375,7 @@
   border-radius: 4px;
 }
 
-/* ===== MASONRY GRID ===== */
+/* Masonry */
 .masonry-grid {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -224,7 +407,7 @@
   background-color: #f0f0f0;
 }
 
-/* --- Card Info Box (Used by both scroller and masonry) --- */
+/* Card info */
 .item-info {
   padding: 15px;
   display: flex;
@@ -270,9 +453,8 @@
   opacity: 0.8;
   box-shadow: 0 4px 10px rgba(255, 102, 0, 0.3);
 }
-/* --- End of Card Styles --- */
 
-/* ===== FOOTER ===== */
+/* Footer and animations */
 .main-footer {
   text-align: center;
   padding: 40px;
@@ -283,8 +465,6 @@
   background-color: var(--secondary-bg);
   position: relative;
 }
-
-/* ===== FADE-IN ANIMATION (for JS) ===== */
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(30px);
@@ -295,7 +475,7 @@
   transform: translateY(0);
 }
 
-/* ===== LIQUID ETHER (RIPPLE) EFFECT ===== */
+/* Ripple */
 .ripple {
   position: absolute;
   border-radius: 50%;
@@ -311,10 +491,7 @@
   }
 }
 
-/* ======================================= */
-/* === RESPONSIVE STYLES (MEDIA QUERIES) === */
-/* ======================================= */
-
+/* Responsive */
 @media (max-width: 1024px) {
   .container {
     width: 95%;
@@ -335,7 +512,6 @@
     margin-bottom: 12px;
   }
 }
-
 @media (max-width: 768px) {
   .hero-carousel .carousel-slide {
     flex-direction: column;
@@ -366,7 +542,6 @@
     margin-bottom: 10px;
   }
 }
-
 @media (max-width: 480px) {
   .hero-content h2 {
     font-size: 1.8rem;
@@ -374,7 +549,6 @@
   .hero-content p {
     font-size: 0.9rem;
   }
-
   .item-info {
     flex-direction: column;
     align-items: flex-start;

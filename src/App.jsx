@@ -21,6 +21,9 @@ import "./components/TrendingCarousel.css";
 import "./index.css";
 import "./App.css";
 
+// NEW: polished brand wordmark
+import logoWordmark from "./assets/brand/wordmark.svg";
+
 // Your image imports
 import handImage from "./assets/hand.jpeg";
 import girlImage from "./assets/girl.jpg";
@@ -146,14 +149,18 @@ const dockItems = categoryData.map((item) => ({
   onClick: () => console.log(`Clicked ${item.name}`),
 }));
 
+const SLIDE_INTERVAL_MS = 2700; // centralized for dots animation + autoplay
+
+// NEW: control the hero's vertical footprint here
+const HERO_MIN_HEIGHT = 340; // was ~420 via CSS; lower = shorter hero
+const HERO_MEDIA_MAX_HEIGHT = 300; // cap the media (image) height so it doesn't force the hero taller
+
 // --- APP COMPONENT ---
 function App() {
   // --- STATE ---
   const [currentSlide, setCurrentSlide] = useState(0);
-  // Removed scrollAmount state
 
   // --- REFS ---
-  // Removed cardRowRef, prevBtnRef, nextBtnRef
   const autoSlideIntervalRef = useRef(null); // Ref to hold the interval ID
 
   // --- RIPPLE EFFECT HANDLER ---
@@ -183,7 +190,7 @@ function App() {
     stopAutoSlide();
     autoSlideIntervalRef.current = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % slidesData.length);
-    }, 2700); // Your 2.7 second speed
+    }, SLIDE_INTERVAL_MS);
   };
 
   const handleDotClick = (index) => {
@@ -191,9 +198,18 @@ function App() {
     startAutoSlide(); // Reset the timer when a dot is clicked
   };
 
-  // --- SIDE EFFECTS (useEffect) ---
+  const prevSlide = () => {
+    setCurrentSlide(
+      (prev) => (prev - 1 + slidesData.length) % slidesData.length
+    );
+    startAutoSlide();
+  };
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slidesData.length);
+    startAutoSlide();
+  };
 
-  // Carousel auto-slide effect
+  // --- SIDE EFFECTS (useEffect) ---
   useEffect(() => {
     startAutoSlide();
     return () => {
@@ -231,22 +247,25 @@ function App() {
   return (
     <div className="app-container">
       <CardNav
-        logo="https://via.placeholder.com/120x40/FF6600/FFFFFF?text=ModelMart"
+        logo={logoWordmark} // UPDATED: polished logo asset
         logoAlt="ModelMart Logo"
         items={navItems}
         baseColor="#ffffffff"
-        menuColor="#ff6302ff"
+        menuColor="#0f172a" // cleaner, darker icon color
         buttonBgColor="#FF6600"
         buttonTextColor="#FFFFFF"
       />
 
       <main className="container">
+        {/* HERO CAROUSEL (improved styles/controls, same data) */}
         <section
           className="hero-carousel"
           onMouseEnter={stopAutoSlide}
           onMouseLeave={startAutoSlide}
+          aria-roledescription="carousel"
+          aria-label="Hero"
         >
-          {/* --- This is the sliding track --- */}
+          {/* Track */}
           <div
             className="carousel-track"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -254,8 +273,14 @@ function App() {
             {slidesData.map((slide, index) => (
               <div
                 key={index}
-                className={"carousel-slide"} // active class no longer needed here
-                style={{ backgroundImage: `url('${slide.bg}')` }}
+                className="carousel-slide"
+                style={{
+                  backgroundImage: `url('${slide.bg}')`,
+                  minHeight: `${HERO_MIN_HEIGHT}px`, // LOWER HEIGHT
+                }}
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`Slide ${index + 1} of ${slidesData.length}`}
               >
                 <div className="hero-content">
                   <h2>{slide.title}</h2>
@@ -264,22 +289,60 @@ function App() {
                     {slide.btnText}
                   </button>
                 </div>
+                {/* Cap the asset height so it can't force the hero taller */}
                 <img
                   src={slide.assetImg}
                   alt="Featured Asset"
                   className="hero-asset-image"
+                  style={{
+                    maxHeight: `${HERO_MEDIA_MAX_HEIGHT}px`,
+                    width: "55%",
+                    objectFit: "cover",
+                    borderRadius: 12,
+                  }}
                 />
               </div>
             ))}
           </div>
-          {/* --- End of track --- */}
-          <div className="carousel-dots">
+
+          {/* Arrows (overlay) */}
+          <div className="hero-arrows" aria-hidden>
+            <button
+              className="hero-arrow"
+              onClick={prevSlide}
+              aria-label="Previous slide"
+            >
+              ‹
+            </button>
+            <button
+              className="hero-arrow"
+              onClick={nextSlide}
+              aria-label="Next slide"
+            >
+              ›
+            </button>
+          </div>
+
+          {/* Dots with progress fill */}
+          <div
+            className="carousel-dots"
+            role="tablist"
+            aria-label="Select hero slide"
+          >
             {slidesData.map((_, index) => (
-              <span
+              <button
                 key={index}
                 className={index === currentSlide ? "dot active" : "dot"}
                 onClick={() => handleDotClick(index)}
-              ></span>
+                aria-selected={index === currentSlide}
+                aria-label={`Go to slide ${index + 1}`}
+                type="button"
+              >
+                <span
+                  className="dot-fill"
+                  style={{ animationDuration: `${SLIDE_INTERVAL_MS}ms` }}
+                />
+              </button>
             ))}
           </div>
         </section>
@@ -291,8 +354,6 @@ function App() {
           distance={150}
           panelHeight={100}
         />
-
-        {/* --- "New Arrivals" scroller is removed --- */}
 
         {/* --- 2. UPDATED MASONRY SECTIONS --- */}
         <section className="product-section animate-on-scroll">
@@ -380,11 +441,8 @@ function App() {
         <section className="product-section animate-on-scroll">
           <h3>Trending Models</h3>
 
-          {/* REPLACE the Masonry wrapper with the carousel */}
+          {/* Keep your existing TrendingCarousel usage as is */}
           <TrendingCarousel>
-            {/* Paste ALL your existing cards from this section here, unchanged */}
-            {/* Example using the first two items already in the file: */}
-
             <div className="masonry-item">
               <img src={narutoImage} alt="Asset" />
               <div className="item-info">
@@ -510,8 +568,6 @@ function App() {
                 </button>
               </div>
             </div>
-
-            {/* Continue pasting the rest of your existing trending cards here */}
           </TrendingCarousel>
         </section>
 

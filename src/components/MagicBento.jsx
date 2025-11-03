@@ -12,6 +12,11 @@ import demonImage from "../assets/demon.jpg";
 import whaleImage from "../assets/whale.jpeg";
 import bikeImage from "../assets/bike.jpeg";
 import spyImage from "../assets/spy.jpg";
+import girlblueImage from "../assets/girl-blue.jpg";
+import girlflowerImage from "../assets/girl-flower.jpg";
+import girlkatanaImage from "../assets/girl-katana.jpg";
+import girlmoonImage from "../assets/girl-moon.jpg";
+import girlwhiteImage from "../assets/girl-white.jpg";
 import humanImage from "../assets/human.jpeg";
 import spiderVideo from "../assets/spider.mp4";
 import newJeansVideo from "../assets/new-jeans.mp4";
@@ -29,14 +34,14 @@ const cardData = [
     title: "Angry Expressions",
     description: "Track user behavior",
     label: "Insights",
-    img: angryImage,
+    img: girlblueImage,
   },
   {
     color: "#FFFFFF",
     title: "Characters",
     description: "Centralized data view",
     label: "Overview",
-    img: girlImage,
+    img: girlflowerImage,
   },
   {
     color: "#FFFFFF",
@@ -57,14 +62,14 @@ const cardData = [
     title: "Sci-Fi Bike",
     description: "Connect favorite tools",
     label: "Connectivity",
-    img: bikeImage,
+    img: girlkatanaImage,
   },
   {
     color: "#FFFFFF",
     title: "Human Models",
     description: "Enterprise-grade protection",
     label: "Protection",
-    img: humanImage,
+    img: girlwhiteImage,
   },
 ];
 
